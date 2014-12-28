@@ -13,6 +13,10 @@ include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs core option support mc native)
 
+# Find Boost
+find_package(Boost REQUIRED filesystem system)
+include_directories(${Boost_INCLUDE_DIR})
+
 add_definitions(-fno-rtti -Wall -Wextra -pedantic)
 
 # Add our files to some variables
@@ -38,5 +42,6 @@ target_link_libraries(inclusion-mapper
   clangLex
   clangBasic
   ${llvm_libs}
+  ${Boost_LIBRARIES}
 )
 

@@ -1,6 +1,7 @@
 // Copyright: 2014 Steven Lamerton
 // License: MIT, see LICENSE
 
+#include <boost/filesystem.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/ADT/SmallVector.h>
@@ -21,25 +22,16 @@ void Callbacks::InclusionDirective(
     // Normalise the file paths before adding the relationship
     llvm::StringRef current_file_ref =
         pp_.getSourceManager().getFilename(hash_loc);
-    llvm::SmallVector<char, 128> normalised_current_file(
+    boost::filesystem::path current_file(
         current_file_ref.begin(),
         current_file_ref.end());
-    llvm::sys::fs::make_absolute(normalised_current_file);
 
-    std::string included_file =
-        std::string(search_path) + "/" + std::string(relative_path);
-    llvm::SmallVector<char, 128> normalised_included_file(
-        included_file.begin(),
-        included_file.end());
-    llvm::sys::fs::make_absolute(normalised_included_file);
+    boost::filesystem::path included_file(std::string(search_path) +
+        "/" + std::string(relative_path));
 
     inclusions_->emplace(
-        std::string(
-            normalised_current_file.begin(),
-            normalised_current_file.end()),
-        std::string(
-            normalised_included_file.begin(),
-            normalised_included_file.end()));
+        boost::filesystem::canonical(current_file).string(),
+        boost::filesystem::canonical(included_file).string());
   }
 }
 

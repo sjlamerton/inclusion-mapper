@@ -2,7 +2,7 @@
 // License: MIT, see LICENSE
 
 #include <llvm/Support/raw_ostream.h>
-#include "inclusion_mapper.h"
+#include "callbacks.h"
 
 int main(int argc, const char **argv) {
   llvm::cl::OptionCategory options("inclusion-mapper options");

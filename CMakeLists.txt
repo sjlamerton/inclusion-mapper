@@ -20,8 +20,8 @@ include_directories(${Boost_INCLUDE_DIR})
 add_definitions(-fno-rtti -Wall -Wextra -pedantic)
 
 # Add our files to some variables
-set(source inclusion_mapper.cpp main.cpp)
-set(headers inclusion_mapper.h)
+set(source callbacks.cpp main.cpp)
+set(headers callbacks.h)
 
 # Create our executable
 add_executable(inclusion-mapper ${source} ${headers})

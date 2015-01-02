@@ -5,7 +5,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/ADT/SmallVector.h>
-#include "inclusion_mapper.h"
+#include "callbacks.h"
 
 void Callbacks::InclusionDirective(
     clang::SourceLocation hash_loc,

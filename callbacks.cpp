@@ -32,6 +32,21 @@ void Callbacks::InclusionDirective(
   }
 }
 
+void Callbacks::FileChanged(
+      clang::SourceLocation loc,
+      clang::PPCallbacks::FileChangeReason,
+      clang::SrcMgr::CharacteristicKind file_type,
+      clang::FileID) {
+  if (file_type != clang::SrcMgr::CharacteristicKind::C_User) {
+    llvm::StringRef loc_ref = pp_.getSourceManager().getFilename(loc);
+    boost::filesystem::path current_file(
+        loc_ref.begin(),
+        loc_ref.end());
+    map_generator_->AddSystemFile(
+        boost::filesystem::canonical(current_file).string());
+  }
+}
+
 Consumer::Consumer(
     clang::Preprocessor &pp,
     std::shared_ptr<MapGenerator> map_generator) {

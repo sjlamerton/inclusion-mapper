@@ -28,6 +28,12 @@ class Callbacks : public clang::PPCallbacks {
       llvm::StringRef relative_path,
       const clang::Module *imported) override;
 
+  void FileChanged(
+      clang::SourceLocation loc,
+      clang::PPCallbacks::FileChangeReason reason,
+      clang::SrcMgr::CharacteristicKind file_type,
+      clang::FileID prev_fid) override;
+
  private:
   const clang::Preprocessor& pp_;
   std::shared_ptr<MapGenerator> map_generator_;

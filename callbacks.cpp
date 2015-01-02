@@ -2,9 +2,6 @@
 // License: MIT, see LICENSE
 
 #include <boost/filesystem.hpp>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/raw_ostream.h>
-#include <llvm/ADT/SmallVector.h>
 #include "callbacks.h"
 
 void Callbacks::InclusionDirective(
@@ -29,23 +26,25 @@ void Callbacks::InclusionDirective(
     boost::filesystem::path included_file(std::string(search_path) +
         "/" + std::string(relative_path));
 
-    inclusions_->emplace(
+    map_generator_->AddInclusion(std::make_pair(
         boost::filesystem::canonical(current_file).string(),
-        boost::filesystem::canonical(included_file).string());
+        boost::filesystem::canonical(included_file).string()));
   }
 }
 
-Consumer::Consumer(clang::Preprocessor &pp, SharedInclusions inclusions) {
-  pp.addPPCallbacks(llvm::make_unique<Callbacks>(pp, inclusions));
+Consumer::Consumer(
+    clang::Preprocessor &pp,
+    std::shared_ptr<MapGenerator> map_generator) {
+  pp.addPPCallbacks(llvm::make_unique<Callbacks>(pp, map_generator));
 }
 
 std::unique_ptr<clang::ASTConsumer> Action::CreateASTConsumer(
     clang::CompilerInstance &ci,
     llvm::StringRef) {
-  return llvm::make_unique<Consumer>(ci.getPreprocessor(), inclusions_);
+  return llvm::make_unique<Consumer>(ci.getPreprocessor(), map_generator_);
 }
 
 Action* FrontendActionFactory::create() {
-  return new Action(inclusions_);
+  return new Action(map_generator_);
 }
 

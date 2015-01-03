@@ -38,8 +38,12 @@ create an image, for example:
 
     inclusion-mapper -p build *.cpp | dot -Tpng > map.png
 
+![Example image](/docs/example.png?raw=true)
+
 inclusion-mapper also allows you to ignore includes that are system files by
 passing the `-x` flag.
+    
+![Example image without system headers](/docs/example-nosystem.png?raw=true)
 
 [1]: http://en.wikipedia.org/wiki/DOT_%28graph_description_language%29
 [2]: http://www.graphviz.org/

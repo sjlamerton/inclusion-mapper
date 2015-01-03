@@ -1,9 +1,9 @@
 inclusion-mapper is a tool that produces a [dot-file][1] describing the links
 between different files in a C++ codebase. It uses the Clang LibTooling
-interface and works with the CMake built system.
+interface and works with the CMake build system.
 
 Building inclusion-mapper
-=========================
+-------------------------
 
 inclusion-mapper has the following build time prerequisites:
 
@@ -18,7 +18,7 @@ Once the inclusion mapper code has been checked out it can be built with:
     make
 
 Using inclusion-mapper
-======================
+----------------------
 
 inclusion-mapper uses the standard LibTooling command line interface and
 requirs that the codebase you wish to analyse is built with CMake. When running
